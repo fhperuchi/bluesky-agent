@@ -124,7 +124,7 @@ async function checkMentions(session: PasswordSession) {
             const mentionText = typeof postRecord.text === 'string' ? postRecord.text : ''
             console.log(`[${timestamp()}] Processing mention from @${notif.author.handle}: "${mentionText}"`)
 
-            console.log(`[${timestamp()}] Generating Oracle reply with Claude...`)
+            console.log(`[${timestamp()}] Generating Oracle reply with Gemini...`)
             const reply = await generateReply(mentionText)
 
             const parent = { uri: notif.uri, cid: post.thread.post.cid }
