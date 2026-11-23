@@ -3,3 +3,4 @@
  */
 
 export * as defs from "./notification/defs.js";
+export * as listNotifications from "./notification/listNotifications.js";
