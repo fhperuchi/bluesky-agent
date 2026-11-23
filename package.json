@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "devDependencies": {
     "@atproto/lex": "^0.6.1",
     "@atproto/lex-password-session": "^0.3.5",
