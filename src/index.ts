@@ -5,8 +5,13 @@ import {CronJob} from 'cron'
 import * as process from 'process'
 import * as app from './lexicons/app.js'
 import { generateText } from 'ai'
+import { createGoogleGenerativeAI } from '@ai-sdk/google'
 
 dotenv.config()
+
+const google = createGoogleGenerativeAI({
+    apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+})
 
 // Create a session
 async function login() {
@@ -70,7 +75,7 @@ async function login() {
 
 async function generateReply(mentionText: string): Promise<string> {
     const { text } = await generateText({
-        model: 'anthropic/claude-sonnet-4-5',
+        model: google('gemini-2.5-flash'),
         system: 'You are a mystical fortune teller bot on Bluesky named "The Oracle". Speak in a dramatic, mysterious tone with occasional emoji (🔮 ✨ 🌙 ⭐). If someone asks a yes/no question, give a cryptic but leaning answer. If they ask for general guidance, offer a brief horoscope-style prediction. Keep responses under 280 characters. Never break character.',
         prompt: mentionText,
     })
