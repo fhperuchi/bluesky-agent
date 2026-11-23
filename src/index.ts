@@ -82,47 +82,72 @@ const repliedUris = new Set<string>()
 
 // Check for new mentions and reply
 async function checkMentions(session: PasswordSession) {
+    const timestamp = () => new Date().toLocaleTimeString()
+    console.log(`[${timestamp()}] Checking for new mentions...`)
+
     const client = new Client(session)
     const notifications = await client.call(app.bsky.notification.listNotifications, {
         limit: 20,
     })
 
-    for (const notif of notifications.notifications) {
-        // Only process unread mentions that haven't been replied to yet
-        if (notif.reason !== 'mention' || notif.isRead || repliedUris.has(notif.uri)) continue
+    const unreadMentions = notifications.notifications.filter(
+        notif => notif.reason === 'mention' && !notif.isRead && !repliedUris.has(notif.uri)
+    )
 
-        // Get the post that mentioned us
-        const post = await client.call(app.bsky.feed.getPostThread, {
-            uri: notif.uri,
-        })
+    if (unreadMentions.length === 0) {
+        console.log(`[${timestamp()}] No new mentions. (Total notifications: ${notifications.notifications.length})`)
+        return
+    }
 
-        if (!app.bsky.feed.defs.threadViewPost.isTypeOf(post.thread)) continue
+    console.log(`[${timestamp()}] Found ${unreadMentions.length} unread mention(s) to process.`)
 
-        const postRecord = post.thread.post.record as Record<string, any>
-        const mentionText = typeof postRecord.text === 'string' ? postRecord.text : ''
-        const reply = await generateReply(mentionText)
+    for (const notif of unreadMentions) {
+        try {
+            console.log(`[${timestamp()}] Fetching post thread for mention from @${notif.author.handle}...`)
 
-        const parent = { uri: notif.uri, cid: post.thread.post.cid }
-        const root = (postRecord.reply?.root as typeof parent | undefined) ?? parent
+            // Get the post that mentioned us
+            const post = await client.call(app.bsky.feed.getPostThread, {
+                uri: notif.uri,
+            })
 
-        // Reply to the post
-        await client.create(app.bsky.feed.post, {
-            text: reply,
-            createdAt: toDatetimeString(new Date()),
-            reply: {
-                root,
-                parent,
-            },
-        })
+            if (!app.bsky.feed.defs.threadViewPost.isTypeOf(post.thread)) {
+                console.log(`[${timestamp()}] Post thread is not a standard thread view (may be deleted or blocked). Skipping.`)
+                continue
+            }
 
-        repliedUris.add(notif.uri)
-        console.log(`Replied to mention: ${mentionText}`)
+            const postRecord = post.thread.post.record as Record<string, any>
+            const mentionText = typeof postRecord.text === 'string' ? postRecord.text : ''
+            console.log(`[${timestamp()}] Processing mention from @${notif.author.handle}: "${mentionText}"`)
+
+            console.log(`[${timestamp()}] Generating Oracle reply with Claude...`)
+            const reply = await generateReply(mentionText)
+
+            const parent = { uri: notif.uri, cid: post.thread.post.cid }
+            const root = (postRecord.reply?.root as typeof parent | undefined) ?? parent
+
+            // Reply to the post
+            await client.create(app.bsky.feed.post, {
+                text: reply,
+                createdAt: toDatetimeString(new Date()),
+                reply: {
+                    root,
+                    parent,
+                },
+            })
+
+            repliedUris.add(notif.uri)
+            console.log(`[${timestamp()}] Successfully replied to @${notif.author.handle}: "${reply}"`)
+        } catch (err) {
+            console.error(`[${timestamp()}] Failed to process mention ${notif.uri}:`, err)
+        }
     }
 }
 
 async function main() {
     const session = await login()
-    console.log('Agent is running...')
+    const botHandle = process.env.BOT_HANDLE || 'your-bot'
+    console.log(`[${new Date().toLocaleTimeString()}] Logged in successfully as @${botHandle}!`)
+    console.log(`[${new Date().toLocaleTimeString()}] Agent is running. Mention @${botHandle} on Bluesky to test!`)
 
     // Run once immediately on start
     await checkMentions(session).catch(console.error)
