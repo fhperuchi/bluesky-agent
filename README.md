@@ -78,10 +78,29 @@ When started, the agent will:
 
 ### Type Checking
 
+### Running the Security Firehose Monitor
+
+Stream public posts in real-time and detect security vulnerabilities, CVEs, and exploits:
+
+```bash
+npm run firehose
+```
+
+Detections are displayed in real-time in the console and recorded to `vulnerabilities.jsonl`.
+
+### Type Checking & Formatting
+
 Verify TypeScript compilation:
 
 ```bash
 npm run typecheck
+```
+
+Format code and check compliance:
+
+```bash
+npm run format
+npm run check
 ```
 
 ---
