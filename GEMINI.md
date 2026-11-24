@@ -1,4 +1,4 @@
-# Project Guidelines
+# bluesky-agent Project Guidelines
 
 ## Tools & Environment
 
