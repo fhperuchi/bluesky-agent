@@ -13,10 +13,7 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "prettier --write"
-    ],
-    "*.{json,md,yml,yaml}": [
+    "*.{ts,tsx,json,md,yml,yaml}": [
       "prettier --write"
     ]
   },
