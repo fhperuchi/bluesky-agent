@@ -38,26 +38,13 @@ Prettier is configured in `.prettierrc` according to TypeScript community standa
 - **Code Cleanliness**:
   - Remove all unused variables, unused imports, temporary debugging logs (`console.log`), and dead code before committing.
 
-## Pre-Commit Verification Workflow
+## Git Pre-Commit Automation (Husky + lint-staged)
 
-Before committing any changes to the repository, you must verify the code passes all quality checks:
+Git hooks are managed automatically using **Husky** (`.husky/pre-commit`) and **lint-staged**:
 
-1. **Auto-Format Code**:
-   ```bash
-   npm run format
-   ```
-2. **Verify Types**:
-   ```bash
-   npm run typecheck
-   ```
-   Ensures zero compiler diagnostics or type errors (`tsc --noEmit`).
-3. **Verify Formatting**:
-   ```bash
-   npm run format:check
-   ```
-   Ensures all files strictly adhere to Prettier rules.
-4. **All-in-One Pre-Commit Check**:
-   ```bash
-   npm run check
-   ```
-   Executes both type checking and formatting verification in one step. Must exit with code 0 before code is committed.
+- **Automatic Execution**: Every `git commit` automatically triggers:
+  1. `npm run typecheck` — project-wide TypeScript compiler diagnostic check (`tsc --noEmit`).
+  2. `npx lint-staged` — runs Prettier on staged files (`*.ts`, `*.json`, `*.md`, etc.) and automatically re-stages them.
+- **Manual Verification Commands**:
+  - `npm run check` — runs full project type checking and formatting verification.
+  - `npm run format` — formats all files across the repo.
