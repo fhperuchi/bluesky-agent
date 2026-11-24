@@ -28,23 +28,27 @@ The agent handles authenticated sessions, creates posts using typed AT Protocol 
 ## Installation & Setup
 
 1. **Clone the repository:**
+
    ```bash
    git clone git@github.com:fhperuchi/bluesky-agent.git
    cd bluesky-agent
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 3. **Configure Environment Variables:**
    Copy the example environment file:
+
    ```bash
    cp .env.example .env
    ```
 
    Edit `.env` with your Bluesky credentials:
+
    ```env
    BOT_PDS="https://bsky.social"
    BOT_HANDLE="your-handle.bsky.social"
@@ -58,12 +62,15 @@ The agent handles authenticated sessions, creates posts using typed AT Protocol 
 ### Run the Agent
 
 Start the agent directly:
+
 ```bash
 npm start
 ```
-*(Equivalent to running `npx tsx src/index.ts`)*
+
+_(Equivalent to running `npx tsx src/index.ts`)_
 
 When started, the agent will:
+
 1. Authenticate with your PDS using your app password.
 2. Publish an initial post (`🙂`).
 3. Apply the `bot` self-label to your Bluesky profile (preserving any existing profile data).
@@ -72,6 +79,7 @@ When started, the agent will:
 ### Type Checking
 
 Verify TypeScript compilation:
+
 ```bash
 npm run typecheck
 ```

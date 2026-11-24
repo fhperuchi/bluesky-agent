@@ -1,0 +1,9 @@
+node_modules/
+dist/
+build/
+package-lock.json
+.gemini/
+.idea/
+*.log
+.env*
+!.env.example

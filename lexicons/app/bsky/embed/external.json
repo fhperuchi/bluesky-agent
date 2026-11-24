@@ -12,12 +12,7 @@
       "required": ["external"],
       "properties": {
         "data": {
-          "refs": [
-            "#viewArticle",
-            "#viewArticlePublication",
-            "#viewGallery",
-            "#viewLivestream"
-          ],
+          "refs": ["#viewArticle", "#viewArticlePublication", "#viewGallery", "#viewLivestream"],
           "type": "union",
           "description": "Hydrated modality-specific data for the external embed, when available."
         },

@@ -6,6 +6,9 @@
   "scripts": {
     "start": "tsx src/index.ts",
     "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run typecheck && npm run format:check",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -18,6 +21,7 @@
     "@types/node": "^26.6.6",
     "cron": "^4.4.2",
     "dotenv": "^18.0.10",
+    "prettier": "^3.10.1",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   },
@@ -49,7 +53,6 @@
     "pino": "^10.4.0",
     "pino-abstract-transport": "^3.0.0",
     "pino-std-serializers": "^7.1.0",
-    "prettier": "^3.10.1",
     "process-warning": "^5.1.1",
     "quick-format-unescaped": "^4.0.4",
     "real-require": "^1.0.0",

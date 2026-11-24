@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "rebasedev": {
+      "url": "https://rebasedev.com.br/mcp",
+      "type": "http",
+      "authProviderType": "dynamic_discovery"
+    }
+  }
+}

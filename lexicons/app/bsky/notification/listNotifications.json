@@ -55,15 +55,7 @@
     },
     "notification": {
       "type": "object",
-      "required": [
-        "uri",
-        "cid",
-        "author",
-        "reason",
-        "record",
-        "isRead",
-        "indexedAt"
-      ],
+      "required": ["uri", "cid", "author", "reason", "record", "isRead", "indexedAt"],
       "properties": {
         "cid": { "type": "string", "format": "cid" },
         "uri": { "type": "string", "format": "at-uri" },
